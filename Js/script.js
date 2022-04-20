@@ -1,7 +1,7 @@
 function random(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (min - max + 1) + min);
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 // Tableau de citations
@@ -28,3 +28,52 @@ let citations = [
   ["Vous n’êtes jamais trop vieux pour vous fixer de nouveaux buts, ou rendre vos rêves réalité.", "C.S. Lewis",false],
   ["Un pessimiste voit la difficulté dans chaque opportunité. Un optimiste voit une opportunité dans chaque difficulté.", "Winston Churchill",false]
 ];
+
+// Récupération des élements
+let div_citation = document.querySelector("#citation");
+let div_auteur = document.querySelector("#auteur");
+let btn_citation = document.querySelector("#nouveau");
+
+let dernier = null;
+let nombreAleatoire;
+
+
+
+btn_citation.addEventListener('click', () => {
+    let citation_passer = 0;
+    citations.forEach(function (element) {
+        if (element[2] == true) {
+            citation_passer++;
+        }
+    });
+
+    if (citation_passer == citations.length) {
+        citations.forEach(function (element) {
+            element[2] = false;
+        });
+        citation_passer = 0;
+    }
+
+    nombreAleatoire = random(0, citations.length - 1);
+    
+    while (citations[nombreAleatoire][2] == true) {
+        nombreAleatoire = random(0, citations.length - 1);
+    }
+    
+    let tableauCitation = citations[nombreAleatoire];
+    let citation = tableauCitation[0];
+    let auteur = tableauCitation[1];
+
+    // @ts-ignore
+    div_citation.textContent = citation;
+    // @ts-ignore
+    div_auteur.textContent = auteur;
+    citations[nombreAleatoire][2] = true;
+    console.clear();
+    citations.forEach(function (element) {
+        if (element[2] == false) {
+            console.log(element[0]);
+        }
+    });
+
+});
